@@ -124,9 +124,11 @@ class ModalBottomSheet extends StatefulWidget {
   static AnimationController createAnimationController(
     TickerProvider vsync, {
     Duration? duration,
+    Duration? reverseDuration,
   }) {
     return AnimationController(
       duration: duration ?? _bottomSheetDuration,
+      reverseDuration: reverseDuration ?? _bottomSheetDuration,
       debugLabel: 'BottomSheet',
       vsync: vsync,
     );

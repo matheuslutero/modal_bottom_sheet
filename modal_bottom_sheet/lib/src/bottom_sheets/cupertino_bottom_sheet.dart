@@ -98,6 +98,7 @@ Future<T?> showCupertinoModalBottomSheet<T>({
   bool enableDrag = true,
   Radius topRadius = _kDefaultTopRadius,
   Duration? duration,
+  Duration? reverseDuration,
   RouteSettings? settings,
   Color? transitionBackgroundColor,
   BoxShadow? shadow,
@@ -137,6 +138,7 @@ Future<T?> showCupertinoModalBottomSheet<T>({
         animationCurve: animationCurve,
         previousRouteAnimationCurve: previousRouteAnimationCurve,
         duration: duration,
+        reverseDuration: reverseDuration,
         settings: settings,
         transitionBackgroundColor: transitionBackgroundColor ?? Colors.black,
         overlayStyle: overlayStyle),
@@ -172,6 +174,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     bool enableDrag = true,
     required bool expanded,
     Duration? duration,
+    Duration? reverseDuration,
     RouteSettings? settings,
     ScrollController? scrollController,
     this.boxShadow = _kDefaultBoxShadow,
@@ -194,6 +197,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
           settings: settings,
           animationCurve: animationCurve,
           duration: duration,
+          reverseDuration: reverseDuration,
         );
 
   @override
