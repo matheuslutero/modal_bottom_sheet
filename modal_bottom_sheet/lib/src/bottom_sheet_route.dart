@@ -16,6 +16,7 @@ class _ModalBottomSheet<T> extends StatefulWidget {
     this.expanded = false,
     this.enableDrag = true,
     this.animationCurve,
+    this.animationReverseCurve,
   }) : super(key: key);
 
   final double? closeProgressThreshold;
@@ -25,6 +26,7 @@ class _ModalBottomSheet<T> extends StatefulWidget {
   final bool enableDrag;
   final AnimationController? secondAnimationController;
   final Curve? animationCurve;
+  final Curve? animationReverseCurve;
 
   @override
   _ModalBottomSheetState<T> createState() => _ModalBottomSheetState<T>();
@@ -112,6 +114,7 @@ class _ModalBottomSheetState<T> extends State<_ModalBottomSheet<T>> {
                 bounce: widget.bounce,
                 scrollController: scrollController,
                 animationCurve: widget.animationCurve,
+                animationReverseCurve: widget.animationReverseCurve,
               ),
             );
           },
@@ -136,6 +139,7 @@ class ModalBottomSheetRoute<T> extends PageRoute<T> {
     required this.expanded,
     this.bounce = false,
     this.animationCurve,
+    this.animationReverseCurve,
     Duration? duration,
     Duration? reverseDuration,
     RouteSettings? settings,
@@ -158,6 +162,7 @@ class ModalBottomSheetRoute<T> extends PageRoute<T> {
 
   final AnimationController? secondAnimationController;
   final Curve? animationCurve;
+  final Curve? animationReverseCurve;
 
   @override
   Duration get transitionDuration => duration;
@@ -211,6 +216,7 @@ class ModalBottomSheetRoute<T> extends PageRoute<T> {
         bounce: bounce,
         enableDrag: enableDrag,
         animationCurve: animationCurve,
+        animationReverseCurve: animationReverseCurve,
       ),
     );
     return bottomSheet;
@@ -247,6 +253,7 @@ Future<T?> showCustomModalBottomSheet<T>({
   bool expand = false,
   AnimationController? secondAnimation,
   Curve? animationCurve,
+  Curve? animationReverseCurve,
   bool useRootNavigator = false,
   bool isDismissible = true,
   bool enableDrag = true,
@@ -276,6 +283,7 @@ Future<T?> showCustomModalBottomSheet<T>({
     modalBarrierColor: barrierColor,
     enableDrag: enableDrag,
     animationCurve: animationCurve,
+    animationReverseCurve: animationReverseCurve,
     duration: duration,
     reverseDuration: reverseDuration,
     settings: settings,

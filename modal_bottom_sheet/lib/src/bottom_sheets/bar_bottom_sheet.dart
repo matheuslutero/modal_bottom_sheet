@@ -87,11 +87,13 @@ Future<T?> showBarModalBottomSheet<T>({
   bool expand = false,
   AnimationController? secondAnimation,
   Curve? animationCurve,
+  Curve? animationReverseCurve,
   bool useRootNavigator = false,
   bool isDismissible = true,
   bool enableDrag = true,
   Widget? topControl,
   Duration? duration,
+  Duration? reverseDuration,
   RouteSettings? settings,
   SystemUiOverlayStyle? overlayStyle,
   double? closeProgressThreshold,
@@ -119,7 +121,9 @@ Future<T?> showBarModalBottomSheet<T>({
     modalBarrierColor: barrierColor,
     enableDrag: enableDrag,
     animationCurve: animationCurve,
+    animationReverseCurve: animationReverseCurve,
     duration: duration,
+    reverseDuration: reverseDuration,
     settings: settings,
   ));
   return result;

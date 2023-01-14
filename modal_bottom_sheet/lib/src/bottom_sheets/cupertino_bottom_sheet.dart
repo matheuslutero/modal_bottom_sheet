@@ -91,7 +91,9 @@ Future<T?> showCupertinoModalBottomSheet<T>({
   bool expand = false,
   AnimationController? secondAnimation,
   Curve? animationCurve,
+  Curve? animationReverseCurve,
   Curve? previousRouteAnimationCurve,
+  Curve? previousRouteAnimationReverseCurve,
   bool useRootNavigator = false,
   bool bounce = true,
   bool? isDismissible,
@@ -136,7 +138,9 @@ Future<T?> showCupertinoModalBottomSheet<T>({
         enableDrag: enableDrag,
         topRadius: topRadius,
         animationCurve: animationCurve,
+        animationReverseCurve: animationReverseCurve,
         previousRouteAnimationCurve: previousRouteAnimationCurve,
+        previousRouteAnimationReverseCurve: previousRouteAnimationReverseCurve,
         duration: duration,
         reverseDuration: reverseDuration,
         settings: settings,
@@ -150,6 +154,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
   final Radius topRadius;
 
   final Curve? previousRouteAnimationCurve;
+  final Curve? previousRouteAnimationReverseCurve;
 
   final BoxShadow? boxShadow;
 
@@ -168,6 +173,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     Clip? clipBehavior,
     AnimationController? secondAnimationController,
     Curve? animationCurve,
+    Curve? animationReverseCurve,
     Color? modalBarrierColor,
     bool bounce = true,
     bool isDismissible = true,
@@ -181,6 +187,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
     this.transitionBackgroundColor,
     this.topRadius = _kDefaultTopRadius,
     this.previousRouteAnimationCurve,
+    this.previousRouteAnimationReverseCurve,
     this.overlayStyle,
   }) : super(
           closeProgressThreshold: closeProgressThreshold,
@@ -196,6 +203,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
           expanded: expanded,
           settings: settings,
           animationCurve: animationCurve,
+          animationReverseCurve: animationReverseCurve,
           duration: duration,
           reverseDuration: reverseDuration,
         );
@@ -232,6 +240,7 @@ class CupertinoModalBottomSheetRoute<T> extends ModalBottomSheetRoute<T> {
       secondaryAnimation: secondAnimation,
       body: child,
       animationCurve: previousRouteAnimationCurve,
+      reverseCurve: previousRouteAnimationReverseCurve,
       topRadius: topRadius,
       backgroundColor: transitionBackgroundColor ?? Colors.black,
       overlayStyle: overlayStyle,
@@ -243,6 +252,7 @@ class _CupertinoModalTransition extends StatelessWidget {
   final Animation<double> secondaryAnimation;
   final Radius topRadius;
   final Curve? animationCurve;
+  final Curve? reverseCurve;
   final Color backgroundColor;
   final SystemUiOverlayStyle? overlayStyle;
 
@@ -255,6 +265,7 @@ class _CupertinoModalTransition extends StatelessWidget {
     required this.topRadius,
     this.backgroundColor = Colors.black,
     this.animationCurve,
+    this.reverseCurve,
     this.overlayStyle,
   }) : super(key: key);
 
@@ -270,6 +281,7 @@ class _CupertinoModalTransition extends StatelessWidget {
     final curvedAnimation = CurvedAnimation(
       parent: secondaryAnimation,
       curve: animationCurve ?? Curves.easeOut,
+      reverseCurve: reverseCurve ?? Curves.easeOut,
     );
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -434,6 +446,7 @@ class CupertinoScaffold extends StatefulWidget {
     required WidgetBuilder builder,
     Curve? animationCurve,
     Curve? previousRouteAnimationCurve,
+    Curve? previousRouteAnimationReverseCurve,
     Color? backgroundColor,
     Color? barrierColor,
     bool expand = false,
@@ -475,6 +488,7 @@ class CupertinoScaffold extends StatefulWidget {
       topRadius: topRadius ?? _kDefaultTopRadius,
       animationCurve: animationCurve,
       previousRouteAnimationCurve: previousRouteAnimationCurve,
+      previousRouteAnimationReverseCurve: previousRouteAnimationReverseCurve,
       duration: duration,
       settings: settings,
       overlayStyle: overlayStyle,

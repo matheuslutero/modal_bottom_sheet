@@ -36,6 +36,7 @@ class ModalBottomSheet extends StatefulWidget {
     Key? key,
     required this.animationController,
     this.animationCurve,
+    this.animationReverseCurve,
     this.enableDrag = true,
     this.containerBuilder,
     this.bounce = true,
@@ -62,10 +63,15 @@ class ModalBottomSheet extends StatefulWidget {
   /// is not just a passive observer.
   final AnimationController animationController;
 
-  /// The curve used by the animation showing and dismissing the bottom sheet.
+  /// The curve used by the animation showing the bottom sheet.
   ///
   /// If no curve is provided it falls back to `decelerateEasing`.
   final Curve? animationCurve;
+
+  /// The curve used by the animation dismissing the bottom sheet.
+  ///
+  /// If no curve is provided it falls back to `decelerateEasing`.
+  final Curve? animationReverseCurve;
 
   /// Allows the bottom sheet to  go beyond the top bound of the content,
   /// but then bounce the content back to the edge of
@@ -190,10 +196,12 @@ class ModalBottomSheetState extends State<ModalBottomSheet>
     return result ?? false;
   }
 
-  ParametricCurve<double> animationCurve = Curves.linear;
+  late ParametricCurve<double> animationCurve;
+  late ParametricCurve<double> animationReverseCurve;
 
   void _handleDragUpdate(double primaryDelta) async {
     animationCurve = Curves.linear;
+    animationReverseCurve = Curves.linear;
     assert(widget.enableDrag, 'Dragging is disabled');
 
     if (_dismissUnderway) return;
@@ -230,6 +238,10 @@ class ModalBottomSheetState extends State<ModalBottomSheet>
     animationCurve = BottomSheetSuspendedCurve(
       widget.animationController.value,
       curve: _defaultCurve,
+    );
+    animationReverseCurve = BottomSheetSuspendedCurve(
+      widget.animationController.value,
+      curve: _defaultReverseCurve,
     );
 
     if (_dismissUnderway || !isDragging) return;
@@ -342,9 +354,13 @@ class ModalBottomSheetState extends State<ModalBottomSheet>
 
   Curve get _defaultCurve => widget.animationCurve ?? _decelerateEasing;
 
+  Curve get _defaultReverseCurve =>
+      widget.animationReverseCurve ?? _decelerateEasing;
+
   @override
   void initState() {
     animationCurve = _defaultCurve;
+    animationReverseCurve = _defaultReverseCurve;
     _bounceDragController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
 
@@ -374,7 +390,12 @@ class ModalBottomSheetState extends State<ModalBottomSheet>
       animation: widget.animationController,
       builder: (context, Widget? child) {
         assert(child != null);
-        final animationValue = animationCurve.transform(
+        final currentCurve =
+            widget.animationController.status == AnimationStatus.reverse
+                ? animationReverseCurve
+                : animationCurve;
+
+        final animationValue = currentCurve.transform(
             mediaQuery.accessibleNavigation
                 ? 1.0
                 : widget.animationController.value);
